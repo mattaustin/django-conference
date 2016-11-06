@@ -1,0 +1,11 @@
+{% extends "conference/base.html" %}
+
+{% block content %}
+
+  {% for conference in conference_list %}
+    {% if forloop.first %}<ul>{% endif %}
+      <li><a href="{{ conference.get_absolute_url }}">{{ conference }}</a></li>
+    {% if forloop.last %}</ul>{% endif %}
+  {% endfor %}
+
+{% endblock %}

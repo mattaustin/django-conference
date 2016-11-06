@@ -1,0 +1,56 @@
+{% extends "conference/base.html" %}
+
+
+{% block title %}{{ conference }} - {{ block.super }}{% endblock %}
+
+
+{% block content %}
+
+  <h1>{{ conference }}</h1>
+
+  {% for timeslot in conference.timeslots.current %}
+    {% if forloop.first %}<br /><h2>Now</h2><ul>{% endif %}
+      <li>
+        <h3>{{ timeslot.start_at|date:"SHORT_DATETIME_FORMAT" }}: {{ timeslot }}</h3>
+        {% for resource in timeslot.resources.all %}{% if forloop.first %}<div>at {% elif forloop.last %}{% if not forloop.counter == 2 %},{% endif %} and {% else %}, {% endif %}{{ resource }}{% if forloop.last %}</div>{% endif %}{% endfor %}
+        {% for presenter in timeslot.presenters.all %}{% if forloop.first %}<div>with {% elif forloop.last %}{% if not forloop.counter == 2 %},{% endif %} and {% else %}, {% endif %}{{ presenter }}{% if forloop.last %}</div>{% endif %}{% endfor %}
+        {% if timeslot.description %}<p>{{ timeslot.description }}</p>{% endif %}
+      </li>
+    {% if forloop.last %}</ul>{% endif %}
+  {% endfor %}
+
+  {% with timeslot=conference.timeslots.next %}
+    {% if timeslot %}<br /><h2>Next</h2><ul>
+      <li>
+        <h3>{{ timeslot.start_at|date:"SHORT_DATETIME_FORMAT" }}: {{ timeslot }}</h3>
+        {% for resource in timeslot.resources.all %}{% if forloop.first %}<div>at {% elif forloop.last %}{% if not forloop.counter == 2 %},{% endif %} and {% else %}, {% endif %}{{ resource }}{% if forloop.last %}</div>{% endif %}{% endfor %}
+        {% for presenter in timeslot.presenters.all %}{% if forloop.first %}<div>with {% elif forloop.last %}{% if not forloop.counter == 2 %},{% endif %} and {% else %}, {% endif %}{{ presenter }}{% if forloop.last %}</div>{% endif %}{% endfor %}
+        {% if timeslot.description %}<p>{{ timeslot.description }}</p>{% endif %}
+      </li>
+    </ul>{% endif %}
+  {% endwith %}
+
+  {% with timeslot=conference.timeslots.later %}
+    {% if timeslot %}<br /><h2>Later</h2><ul>
+      <li>
+        <h3>{{ timeslot.start_at|date:"SHORT_DATETIME_FORMAT" }}: {{ timeslot }}</h3>
+        {% for resource in timeslot.resources.all %}{% if forloop.first %}<div>at {% elif forloop.last %}{% if not forloop.counter == 2 %},{% endif %} and {% else %}, {% endif %}{{ resource }}{% if forloop.last %}</div>{% endif %}{% endfor %}
+        {% for presenter in timeslot.presenters.all %}{% if forloop.first %}<div>with {% elif forloop.last %}{% if not forloop.counter == 2 %},{% endif %} and {% else %}, {% endif %}{{ presenter }}{% if forloop.last %}</div>{% endif %}{% endfor %}
+        {% if timeslot.description %}<p>{{ timeslot.description }}</p>{% endif %}
+      </li>
+    </ul>{% endif %}
+  {% endwith %}
+
+  {% for timeslot in conference.timeslots.all %}
+    {% if forloop.first %}<br /><h2>Schedule</h2><ul>{% endif %}
+      <li><br />
+        <h3>{{ timeslot.start_at|date:"SHORT_DATETIME_FORMAT" }}: {{ timeslot }}</h3>
+        {% for resource in timeslot.resources.all %}{% if forloop.first %}<div>at {% elif forloop.last %}{% if not forloop.counter == 2 %},{% endif %} and {% else %}, {% endif %}{{ resource }}{% if forloop.last %}</div>{% endif %}{% endfor %}
+        {% for presenter in timeslot.presenters.all %}{% if forloop.first %}<div>with {% elif forloop.last %}{% if not forloop.counter == 2 %},{% endif %} and {% else %}, {% endif %}{{ presenter }}{% if forloop.last %}</div>{% endif %}{% endfor %}
+        {% if timeslot.video %}<div><iframe width="178" height="100" src="{{ timeslot.video }}" frameborder="0" allowfullscreen></iframe></div>{% endif %}
+        {% if timeslot.description %}<p>{{ timeslot.description }}</p>{% endif %}
+      </li>
+    {% if forloop.last %}</ul>{% endif %}
+  {% endfor %}
+
+{% endblock %}
