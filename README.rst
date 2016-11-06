@@ -15,7 +15,7 @@ Install django-conference by running:
 
 .. code-block:: sh
 
-    pip install django-conference
+    pip install git+https://github.com/mattaustin/django-conference.git
 
 
 Contribute
